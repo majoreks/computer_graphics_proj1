@@ -68,5 +68,23 @@ namespace cg1
                 originalImage.Source = new BitmapImage(new Uri(op.FileName));
             }
         }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            //if (filteredImage.Source != null)
+            //{
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.FileName = "image"; // Default file name
+                dlg.DefaultExt = ".jpg"; // Default file extension
+                dlg.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+                    "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+                    "Portable Network Graphic (*.png)|*.png"; // Filter files by extension
+                if (dlg.ShowDialog() == true)
+                {
+                    string filename = dlg.FileName;
+                    MessageBox.Show(filename);
+                }
+            //}
+        }
     }
 }

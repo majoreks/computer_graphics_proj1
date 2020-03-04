@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:cg1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1600" WindowStartupLocation="CenterScreen">
+        Title="CG1" Height="900" Width="1600" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -19,7 +19,7 @@
             <Menu DockPanel.Dock="Top" >
                 <MenuItem Header="_File" Height="20" >
                     <MenuItem Header="_Open File" Click="MenuItem_Click_1"/>
-                    <MenuItem Header="_Save File"/>
+                    <MenuItem Header="_Save File" Click="MenuItem_Click_2"/>
                     <Separator />
                     <MenuItem Header="_Exit" Click="MenuItem_Click"/>
                 </MenuItem>

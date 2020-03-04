@@ -71,8 +71,8 @@ namespace cg1
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            //if (filteredImage.Source != null)
-            //{
+            if (filteredImage.Source != null)
+            {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.FileName = "image"; // Default file name
                 dlg.DefaultExt = ".jpg"; // Default file extension
@@ -82,9 +82,10 @@ namespace cg1
                 if (dlg.ShowDialog() == true)
                 {
                     string filename = dlg.FileName;
+                    
                     MessageBox.Show(filename);
                 }
-            //}
+            }
         }
     }
 }

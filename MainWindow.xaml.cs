@@ -44,11 +44,19 @@ namespace cg1
         {
             if (!(functionalFiltersListBox.SelectedItem is IFilter))
             {
-                MessageBox.Show("error");
+                //MessageBox.Show("error");
                 return;
             }
+            BitmapImage bimg = new BitmapImage();
+            if (filteredImage.Source != null)
+            {
+                bimg = (BitmapImage)filteredImage.Source;
+            }
+            else
+            {
+                bimg = (BitmapImage)originalImage.Source;
+            }
             //MessageBox.Show(convolutionFiltersListBox.SelectedIndex.ToString(), functionalFiltersListBox.SelectedIndex.ToString());
-            BitmapImage bimg = (BitmapImage)originalImage.Source;
             //MessageBox.Show(bimg.ToString());
             Bitmap bmp = BitmapImage2Bitmap(bimg);
             IFilter xd = functionalFiltersListBox.SelectedItem as IFilter;
@@ -146,6 +154,11 @@ namespace cg1
                     }
                 }
             }
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            filteredImage.Source = null;
         }
     }
 }

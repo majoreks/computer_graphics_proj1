@@ -61,8 +61,11 @@
                         </GroupBox>
                         <GroupBox Header="Convolution Filters" Grid.Row="1" Margin="5">
                             <ListBox Margin="5" Name="convolutionFiltersListBox" SelectionChanged="convolutionFiltersListBox_SelectionChanged">
-                                <ListBoxItem>avvvvvvas</ListBoxItem>
-                                <ListBoxItem>asddd</ListBoxItem>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
                             </ListBox>
                         </GroupBox>
                         <Button Content="Apply" Grid.Row="2" Margin="5" Click="Button_Click"/>

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -33,7 +37,65 @@ namespace cg1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(convolutionFiltersListBox.SelectedIndex.ToString(), functionalFiltersListBox.SelectedIndex.ToString());
+            //MessageBox.Show(convolutionFiltersListBox.SelectedIndex.ToString(), functionalFiltersListBox.SelectedIndex.ToString());
+            BitmapImage bimg = (BitmapImage)originalImage.Source;
+            //MessageBox.Show(bimg.ToString());
+            Bitmap bmp = BitmapImage2Bitmap(bimg);
+            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            unsafe
+            {
+                int* bytes = (int*)data.Scan0;
+                //MessageBox.Show(bytes[0].ToString());
+                var channelSize = 3;
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        row[x * channelSize] = Convert.ToByte(255 - row[x * channelSize]);
+                        row[x * channelSize + 1] = Convert.ToByte(255 - row[x * channelSize + 1]);
+                        row[x * channelSize + 2] = Convert.ToByte(255 - row[x * channelSize + 2]);
+                    }
+                }
+            }
+            bmp.UnlockBits(data);
+            ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
+            filteredImage.Source = newImg;
+
+        }
+
+        private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        {
+            // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
+
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
+        }
+
+        private BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
+        {
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                return bitmapImage;
+            }
         }
 
         private void convolutionFiltersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -82,7 +144,7 @@ namespace cg1
                 if (dlg.ShowDialog() == true)
                 {
                     string filename = dlg.FileName;
-                    
+
                     MessageBox.Show(filename);
                 }
             }

@@ -138,7 +138,12 @@ namespace cg1
                 {
                     string filename = dlg.FileName;
 
-                    MessageBox.Show(filename);
+                    var encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create((BitmapSource)filteredImage.Source));
+                    using (FileStream stream = new FileStream(filename, FileMode.Create))
+                    {
+                        encoder.Save(stream);
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -25,9 +26,13 @@ namespace cg1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ObservableCollection<IFilter> filters;
         public MainWindow()
         {
             InitializeComponent();
+            filters = new ObservableCollection<IFilter>();
+            filters.Add(new InversionFilter());
+            functionalFiltersListBox.ItemsSource = filters;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -37,29 +42,17 @@ namespace cg1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (!(functionalFiltersListBox.SelectedItem is IFilter))
+            {
+                MessageBox.Show("error");
+                return;
+            }
             //MessageBox.Show(convolutionFiltersListBox.SelectedIndex.ToString(), functionalFiltersListBox.SelectedIndex.ToString());
             BitmapImage bimg = (BitmapImage)originalImage.Source;
             //MessageBox.Show(bimg.ToString());
             Bitmap bmp = BitmapImage2Bitmap(bimg);
-            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            unsafe
-            {
-                int* bytes = (int*)data.Scan0;
-                //MessageBox.Show(bytes[0].ToString());
-                var channelSize = 3;
-                for (int y = 0; y < bmp.Height; y++)
-                {
-                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
-                    for (int x = 0; x < bmp.Width; x++)
-                    {
-                        row[x * channelSize] = Convert.ToByte(255 - row[x * channelSize]);
-                        row[x * channelSize + 1] = Convert.ToByte(255 - row[x * channelSize + 1]);
-                        row[x * channelSize + 2] = Convert.ToByte(255 - row[x * channelSize + 2]);
-                    }
-                }
-            }
-            bmp.UnlockBits(data);
+            IFilter xd = functionalFiltersListBox.SelectedItem as IFilter;
+            xd.Filter(bmp);
             ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
             filteredImage.Source = newImg;
 

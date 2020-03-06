@@ -51,8 +51,11 @@
                         </Grid.RowDefinitions>
                         <GroupBox Header="Functional Filters" Grid.Row="0" Margin="5">
                             <ListBox Margin="5" Name="functionalFiltersListBox" SelectionChanged="functionalFiltersListBox_SelectionChanged">
-                                <ListBoxItem>asd</ListBoxItem>
-                                <ListBoxItem>asdads</ListBoxItem>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
                             </ListBox>
                         </GroupBox>
                         <GroupBox Header="Convolution Filters" Grid.Row="1" Margin="5">

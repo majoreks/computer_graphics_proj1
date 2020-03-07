@@ -32,6 +32,7 @@ namespace cg1
             InitializeComponent();
             filters = new ObservableCollection<IFilter>();
             filters.Add(new InversionFilter());
+            filters.Add(new BrightnessCorrectionFilter());
             functionalFiltersListBox.ItemsSource = filters;
         }
 
@@ -121,6 +122,20 @@ namespace cg1
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
+            if (filteredImage.Source != null)
+            {
+                MessageBoxResult result = MessageBox.Show("If you proceed you will lose filtered image, are you sure?", "Warning!",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    filteredImage.Source = null;
+                }
+                else
+                {
+                    return;
+                }
+
+            }
             OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
             op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +

@@ -10,15 +10,10 @@ namespace cg1
 {
     public class InversionFilter : IFilter
     {
-        private string name;
+        private string name = "Inversion";
         public string Name
         {
             get { return name; }
-        }
-
-        public InversionFilter()
-        {
-            this.name = "Inversion";
         }
 
         public void Filter(Bitmap bmp)

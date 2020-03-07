@@ -12,7 +12,8 @@ namespace cg1
     class BrightnessCorrectionFilter : IFilter
     {
         private string name = "Brightness Correction";
-        private int dx = -55;
+        // changable correction
+        private const int DX = -55;
         public string Name
         {
             get { return name; }
@@ -37,8 +38,9 @@ namespace cg1
                     {
                         for (int channel = 0; channel < 3; channel++)
                         {
-                            int newVal = row[x * channelSize + channel] + dx;
-                            if (dx >= 0)
+                            int newVal = row[x * channelSize + channel] + DX;
+                            // this if, or it's else are unreachable depending on DX's value
+                            if (DX >= 0)
                             {
                                 if (newVal > 255)
                                 {

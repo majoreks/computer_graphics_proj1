@@ -33,6 +33,8 @@ namespace cg1
             filters = new ObservableCollection<IFilter>();
             filters.Add(new InversionFilter());
             filters.Add(new BrightnessCorrectionFilter());
+            filters.Add(new GammaCorrectionFilter());
+            filters.Add(new ContrastEnhancementFilter());
             functionalFiltersListBox.ItemsSource = filters;
         }
 

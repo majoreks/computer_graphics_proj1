@@ -35,10 +35,10 @@
                     <Style TargetType="Expander">
                         <Style.Triggers>
                             <Trigger Property="IsExpanded" Value="True">
-                                <Setter Property="Header" Value="See less"/>
+                                <Setter Property="Header" Value="Hide filters"/>
                             </Trigger>
                             <Trigger Property="IsExpanded" Value="False">
-                                <Setter Property="Header" Value="See more"/>
+                                <Setter Property="Header" Value=""/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>

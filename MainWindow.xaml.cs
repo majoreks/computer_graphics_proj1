@@ -137,7 +137,7 @@ namespace cg1
             if (filteredImage.Source != null)
             {
                 SaveFileDialog dlg = new SaveFileDialog();
-                dlg.FileName = "image"; // Default file name
+                dlg.FileName = "filtered_image"; // Default file name
                 dlg.DefaultExt = ".jpg"; // Default file extension
                 dlg.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
                     "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +

@@ -48,7 +48,7 @@ namespace cg1
                                 { 1, 1, 1, }, },
                 10, 0));
             convolutionalFiltersList.Add(new ConvolutionFilter(
-                "Gaussian",
+                "Gaussian blur",
                 new double[,] { { 0, 1, 0, },
                                 { 1, 4, 1, },
                                 { 0, 1, 0, }, },
@@ -214,6 +214,12 @@ namespace cg1
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
             filteredImage.Source = null;
+        }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            EditFiltersWindow editWindow = new EditFiltersWindow();
+            editWindow.Show();
         }
     }
 }

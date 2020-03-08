@@ -25,6 +25,7 @@
                     <MenuItem Header="_Clear image" Click="MenuItem_Click_3"/>
                     <MenuItem Header="_Exit" Click="MenuItem_Click"/>
                 </MenuItem>
+                <MenuItem Header="_Edit functional filters" Click="MenuItem_Click_4"/>
                 <MenuItem Header="_About" Height="20"/>
             </Menu>
         </DockPanel>

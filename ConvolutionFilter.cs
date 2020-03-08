@@ -51,17 +51,17 @@ namespace cg1
                     {
                         for (int channel = 0; channel < 3; channel++)
                         {
-                            int newVal = (int)((
-                            (ptrSrc[channel] * kernel[0, 0]) +
-                            (ptrSrc[channel + 3] * kernel[0, 1]) +
-                            (ptrSrc[channel + 6] * kernel[0, 2]) +
-                            (ptrSrc[channel + stride] * kernel[1, 0]) +
-                            (ptrSrc[channel + 3 + stride] * kernel[1, 1]) +
-                            (ptrSrc[channel + 6 + stride] * kernel[1, 2]) +
-                            (ptrSrc[channel + stride * 2] * kernel[2, 0]) +
-                            (ptrSrc[channel + 3 + stride * 2] * kernel[2, 1]) +
-                            (ptrSrc[channel + 6 + stride * 2] * kernel[2, 2]))
-                            / factor);
+                            double newVal = (
+                                (ptrSrc[channel] * kernel[0, 0]) +
+                                (ptrSrc[channel + 3] * kernel[0, 1]) +
+                                (ptrSrc[channel + 6] * kernel[0, 2]) +
+                                (ptrSrc[channel + stride] * kernel[1, 0]) +
+                                (ptrSrc[channel + 3 + stride] * kernel[1, 1]) +
+                                (ptrSrc[channel + 6 + stride] * kernel[1, 2]) +
+                                (ptrSrc[channel + stride * 2] * kernel[2, 0]) +
+                                (ptrSrc[channel + 3 + stride * 2] * kernel[2, 1]) +
+                                (ptrSrc[channel + 6 + stride * 2] * kernel[2, 2]))
+                                / factor;
 
                             if (newVal < 0)
                             {

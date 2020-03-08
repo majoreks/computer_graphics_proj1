@@ -46,31 +46,31 @@ namespace cg1
                 new double[,] { { 1, 1, 1, },
                                 { 1, 1, 1, },
                                 { 1, 1, 1, }, },
-                10));
+                10, 0));
             convolutionalFiltersList.Add(new ConvolutionFilter(
                 "Gaussian",
                 new double[,] { { 0, 1, 0, },
                                 { 1, 4, 1, },
                                 { 0, 1, 0, }, },
-                10));
+                10, 0));
             convolutionalFiltersList.Add(new ConvolutionFilter(
                 "Sharpen",
                 new double[,] { { -1, -1, -1, },
                                 { -1, 9, -1, },
                                 { -1, -1, -1, }, },
-                1));
+                1, 0));
             convolutionalFiltersList.Add(new ConvolutionFilter(
                 "Emboss",
                 new double[,] { { -1, 0, 1, },
                                 { -1, 1, 1, },
                                 { -1, 0, 1, }, },
-                1));
+                1, 0));
             convolutionalFiltersList.Add(new ConvolutionFilter(
                 "Edge detection",
                 new double[,] { { 0, -1, 0, },
                                 { 0, 1, 0, },
                                 { 0, 0, 0, }, },
-                1));
+                1, 128));
             convolutionFiltersListBox.ItemsSource = convolutionalFiltersList;
         }
 

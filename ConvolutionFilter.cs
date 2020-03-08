@@ -15,13 +15,15 @@ namespace cg1
         private string name;
         private double[,] kernel;
         private int factor;
+        private int offset;
         public string Name
         {
             get { return name; }
         }
 
-        public ConvolutionFilter(string name, double[,] kernel, int factor)
+        public ConvolutionFilter(string name, double[,] kernel, int factor, int offset)
         {
+            this.offset = offset;
             this.name = name;
             this.kernel = (double[,])kernel.Clone();
             this.factor = factor;
@@ -61,7 +63,7 @@ namespace cg1
                                 (ptrSrc[channel + stride * 2] * kernel[2, 0]) +
                                 (ptrSrc[channel + 3 + stride * 2] * kernel[2, 1]) +
                                 (ptrSrc[channel + 6 + stride * 2] * kernel[2, 2]))
-                                / factor;
+                                / factor + offset;
 
                             if (newVal < 0)
                             {

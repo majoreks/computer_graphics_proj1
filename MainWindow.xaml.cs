@@ -26,16 +26,52 @@ namespace cg1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<IFilter> filters;
+        private ObservableCollection<IFilter> functionalFiltersList;
+        private ObservableCollection<IFilter> convolutionalFiltersList;
+        private IFilter selectedFilter;
         public MainWindow()
         {
             InitializeComponent();
-            filters = new ObservableCollection<IFilter>();
-            filters.Add(new InversionFilter());
-            filters.Add(new BrightnessCorrectionFilter());
-            filters.Add(new GammaCorrectionFilter());
-            filters.Add(new ContrastEnhancementFilter());
-            functionalFiltersListBox.ItemsSource = filters;
+
+            functionalFiltersList = new ObservableCollection<IFilter>();
+            functionalFiltersList.Add(new InversionFilter());
+            functionalFiltersList.Add(new BrightnessCorrectionFilter());
+            functionalFiltersList.Add(new GammaCorrectionFilter());
+            functionalFiltersList.Add(new ContrastEnhancementFilter());
+            functionalFiltersListBox.ItemsSource = functionalFiltersList;
+
+            convolutionalFiltersList = new ObservableCollection<IFilter>();
+            convolutionalFiltersList.Add(new ConvolutionFilter(
+                "Blur",
+                new double[,] { { 1, 1, 1, },
+                                { 1, 1, 1, },
+                                { 1, 1, 1, }, },
+                10));
+            convolutionalFiltersList.Add(new ConvolutionFilter(
+                "Gaussian",
+                new double[,] { { 0, 1, 0, },
+                                { 1, 4, 1, },
+                                { 0, 1, 0, }, },
+                10));
+            convolutionalFiltersList.Add(new ConvolutionFilter(
+                "Sharpen",
+                new double[,] { { -1, -1, -1, },
+                                { -1, 9, -1, },
+                                { -1, -1, -1, }, },
+                1));
+            convolutionalFiltersList.Add(new ConvolutionFilter(
+                "Emboss",
+                new double[,] { { -1, 0, 1, },
+                                { -1, 1, 1, },
+                                { -1, 0, 1, }, },
+                1));
+            convolutionalFiltersList.Add(new ConvolutionFilter(
+                "Edge detection",
+                new double[,] { { 0, -1, 0, },
+                                { 0, 1, 0, },
+                                { 0, 0, 0, }, },
+                1));
+            convolutionFiltersListBox.ItemsSource = convolutionalFiltersList;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -45,7 +81,7 @@ namespace cg1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!(functionalFiltersListBox.SelectedItem is IFilter))
+            if (!(selectedFilter is IFilter))
             {
                 //MessageBox.Show("error");
                 return;
@@ -60,10 +96,9 @@ namespace cg1
                 bimg = (BitmapImage)originalImage.Source;
             }
             //MessageBox.Show(convolutionFiltersListBox.SelectedIndex.ToString(), functionalFiltersListBox.SelectedIndex.ToString());
-            //MessageBox.Show(bimg.ToString());
+            //MessageBox.Show(selectedFilter.ToString());
             Bitmap bmp = BitmapImage2Bitmap(bimg);
-            IFilter xd = functionalFiltersListBox.SelectedItem as IFilter;
-            xd.Filter(bmp);
+            selectedFilter.Filter(bmp);
             ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
             filteredImage.Source = newImg;
 
@@ -110,6 +145,8 @@ namespace cg1
                 return;
             }
             functionalFiltersListBox.UnselectAll();
+            selectedFilter = tmp.SelectedItem as IFilter;
+
         }
 
         private void functionalFiltersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -120,6 +157,7 @@ namespace cg1
                 return;
             }
             convolutionFiltersListBox.UnselectAll();
+            selectedFilter = tmp.SelectedItem as IFilter;
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)

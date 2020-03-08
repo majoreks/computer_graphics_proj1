@@ -13,7 +13,7 @@ namespace cg1
     class ContrastEnhancementFilter : IFilter
     {
         private string name = "Contrast Enhancement";
-        // changable correction
+        // changable variables
         private const double ALPHA = 1.5;
         private const double BETA = 20;
         public string Name
@@ -36,7 +36,7 @@ namespace cg1
                     {
                         for (int channel = 0; channel < 3; channel++)
                         {
-                            double newVal = ALPHA * (row[x * channelSize + channel]) + BETA;
+                            double newVal = ALPHA * row[x * channelSize + channel] + BETA;
                             if (newVal < 0)
                             {
                                 newVal = 0;

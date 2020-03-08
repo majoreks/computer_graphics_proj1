@@ -40,20 +40,17 @@ namespace cg1
                         {
                             int newVal = row[x * channelSize + channel] + DX;
                             // this if, or it's else are unreachable depending on DX's value
-                            if (DX >= 0)
+
+                            if (newVal > 255)
                             {
-                                if (newVal > 255)
-                                {
-                                    newVal = 255;
-                                }
+                                newVal = 255;
                             }
-                            else
+
+                            else if (newVal < 0)
                             {
-                                if (newVal < 0)
-                                {
-                                    newVal = 0;
-                                }
+                                newVal = 0;
                             }
+
                             row[x * channelSize + channel] = Convert.ToByte(newVal);
                         }
                     }

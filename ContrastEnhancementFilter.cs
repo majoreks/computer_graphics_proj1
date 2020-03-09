@@ -15,7 +15,12 @@ namespace cg1
         private string name = "Contrast Enhancement";
         // changable variables
         private const double ALPHA = 1.5;
-        private const double BETA = 20;
+        private const double BETA = 60;
+        public PointCollection Pts
+        {
+            get;
+            set;
+        }
         public string Name
         {
             get { return name; }
@@ -51,6 +56,28 @@ namespace cg1
                 }
             }
             bmp.UnlockBits(data);
+        }
+
+        public PointCollection GeneratePoints()
+        {
+            Pts = new PointCollection();
+            for (int i = 0; i < 256; i++)
+            {
+                int newVal = (int)(ALPHA*i-BETA);
+                // this if, or it's else are unreachable depending on DX's value
+                if (newVal > 255)
+                {
+                    newVal = 255;
+                }
+
+                else if (newVal < 0)
+                {
+                    newVal = 0;
+                }
+                Pts.Add(new System.Windows.Point(i, newVal));
+            }
+            //MessageBox.Show(Pts.ToString());
+            return Pts;
         }
     }
 }

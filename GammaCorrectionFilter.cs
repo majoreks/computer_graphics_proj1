@@ -44,5 +44,10 @@ namespace cg1
             }
             bmp.UnlockBits(data);
         }
+
+        public PointCollection GeneratePoints()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

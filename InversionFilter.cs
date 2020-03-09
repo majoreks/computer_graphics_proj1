@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows;
 
 namespace cg1
 {
@@ -14,6 +15,13 @@ namespace cg1
         public string Name
         {
             get { return name; }
+            set => name = value;
+        }
+
+        public PointCollection Pts
+        {
+            get;
+            set;
         }
 
         public void Filter(Bitmap bmp)
@@ -39,6 +47,16 @@ namespace cg1
                 }
             }
             bmp.UnlockBits(data);
+        }
+
+        public PointCollection GeneratePoints()
+        {
+            Pts = new PointCollection();
+            for (int i = 0; i < 256; i++)
+            {
+                Pts.Add(new System.Windows.Point(i,255-i));
+            }
+            return Pts;
         }
     }
 }

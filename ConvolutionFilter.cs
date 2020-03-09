@@ -89,5 +89,10 @@ namespace cg1
             bmpTmp.UnlockBits(bmpTmpData);
 
         }
+
+        public PointCollection GeneratePoints()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

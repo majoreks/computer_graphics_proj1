@@ -215,11 +215,19 @@ namespace cg1
         {
             filteredImage.Source = null;
         }
-
+        private bool delAtIndex = true;
+        ObservableCollection<IFilter> tmp = new ObservableCollection<IFilter>();
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            var tmp = functionalFiltersList;
-            tmp.RemoveAt(2);
+            if (delAtIndex)
+            {
+                foreach (var xd in functionalFiltersList)
+                {
+                    tmp.Add(xd);
+                }
+                tmp.RemoveAt(2);
+                delAtIndex = false;
+            }
             EditFiltersWindow editWindow = new EditFiltersWindow(tmp);
             if (editWindow.ShowDialog() == true)
             {
@@ -230,6 +238,7 @@ namespace cg1
                 }
                 EditedFunctionalFilter xd = new EditedFunctionalFilter(ret.name, ret.points);
                 functionalFiltersList.Add(xd);
+                tmp.Add(xd);
             }
             
             //functionalFiltersListBox.ItemsSource = functionalFiltersList;

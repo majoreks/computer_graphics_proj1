@@ -127,5 +127,18 @@ namespace cg1
             //MessageBox.Show(pts.ToString()) ;
 
         }
+
+        private void filterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox tmp = sender as ComboBox;
+            pts = null;
+            pts = ((IFilter)tmp.SelectedItem).GeneratePoints();
+            functionPolyline.Points = pts;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -36,7 +36,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Choose filter" Margin="0 5 0 5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" Margin="0 5 5 5" VerticalContentAlignment="Center" Name="filterComboBox">
+                    <ComboBox Grid.Column="1" Margin="0 5 5 5" VerticalContentAlignment="Center" Name="filterComboBox" 
+                              SelectionChanged="filterComboBox_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -44,7 +45,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </Grid>
-                <Button Content="Save as edited" Grid.Column="3" Margin="5" Click="Button_Click"/>
+                <Button Content="Save as edited" Grid.Column="3" Margin="5" Click="Button_Click_1"/>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Row="1" Margin="5" Header="Function editor" Name="editorGroupbox">

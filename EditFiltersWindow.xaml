@@ -5,22 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:cg1"
         mc:Ignorable="d"
-        Title="CG1 - Functional filters editor" Height="900" Width="1600">
+        Title="CG1 - Functional filters editor" Height="1000" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Controls" Grid.Row="0" Margin="5">
+        
+        <GroupBox Header="Controls" Grid.Row="0" Margin="5 5 5 0">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Save filter" Grid.Column="0" Margin="5"/>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Filter name" Margin="0 5 0 5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="0 5 5 5" VerticalContentAlignment="Center"/>
+                </Grid>
+                <Button Content="Save filter" Grid.Column="1" Margin="5" Click="Button_Click"/>
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Row="1" Margin="5">
-            <Polyline Points="10,100 100,200 200,30 250,200 200,150" Stroke="Black" StrokeThickness="2" Stretch="Fill" Margin="5"/>
+        <GroupBox Grid.Row="1" Margin="5" Header="Function editor" Name="editorGroupbox">
+            <Viewbox>
+                <Canvas Name="polylineWrapperCanvas" RenderTransformOrigin="0.5,0.5" ClipToBounds="False"
+                        Height="256" Width="256" MouseMove="polylineWrapperCanvas_MouseMove">
+                <Canvas.RenderTransform>
+                    <ScaleTransform ScaleY="-1"/>
+                </Canvas.RenderTransform>
+                <Polyline Points="{Binding}" Stroke="Black" StrokeThickness="1" Stretch="Fill" Name="functionPolyline" 
+                      MouseDown="functionPolyline_MouseDown_1">
+                    <!--<Polyline.RenderTransform>
+                        <ScaleTransform ScaleX="2" ScaleY="2"/>
+                    </Polyline.RenderTransform>-->
+                </Polyline>
+                    <Label Name="XD" FontSize="10">
+                        <Label.RenderTransform>
+                            <ScaleTransform ScaleY="-1"/>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+            </Viewbox>
+            
         </GroupBox>
     </Grid>
 </Window>

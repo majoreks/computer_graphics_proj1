@@ -239,7 +239,7 @@ namespace cg1
                 }
                 if (ret.index>=0)
                 {
-                    functionalFiltersList[ret.index].SetName(ret.name);
+                    //functionalFiltersList[ret.index].SetName(ret.name);
                     functionalFiltersList[ret.index].SetPoints(ret.points);
                     functionalFiltersListBox.ItemsSource = functionalFiltersList;
                     return;

@@ -81,7 +81,7 @@ namespace cg1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!(selectedFilter is IFilter))
+            if (!(selectedFilter is IFilter) || (filteredImage.Source == null && originalImage.Source == null))
             {
                 //MessageBox.Show("error");
                 return;
@@ -221,7 +221,14 @@ namespace cg1
             EditFiltersWindow editWindow = new EditFiltersWindow();
             editWindow.ShowDialog();
             var ret = editWindow.retVal;
-            MessageBox.Show(ret.name + " " + ret.points.ToString());
+            EditedFunctionalFilter xd = new EditedFunctionalFilter(ret.name, ret.points);
+            if (ret.name.Length == 0)
+            {
+                return;
+            }
+            functionalFiltersList.Add(xd);
+            //functionalFiltersListBox.ItemsSource = functionalFiltersList;
+            //MessageBox.Show(ret.name + " " + ret.points.ToString());
         }
     }
 }

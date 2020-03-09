@@ -237,7 +237,7 @@ namespace cg1
                 {
                     return;
                 }
-                if (ret.name.Contains("(edited)"))
+                if (ret.index>=0)
                 {
                     functionalFiltersList[ret.index].SetName(ret.name);
                     functionalFiltersList[ret.index].SetPoints(ret.points);

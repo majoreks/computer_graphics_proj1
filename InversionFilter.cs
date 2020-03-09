@@ -33,20 +33,42 @@ namespace cg1
 
             BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), 
                 ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            unsafe
+            if (Pts != null)
             {
-                int* bytes = (int*)data.Scan0;
-                //MessageBox.Show(bytes[0].ToString());
-                var channelSize = 3;
-                for (int y = 0; y < bmp.Height; y++)
+                unsafe
                 {
-                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
-                    for (int x = 0; x < bmp.Width; x++)
+                    int* bytes = (int*)data.Scan0;
+                    //MessageBox.Show(bytes[0].ToString());
+                    var channelSize = 3;
+                    for (int y = 0; y < bmp.Height; y++)
                     {
-                        row[x * channelSize] = Convert.ToByte(255 - row[x * channelSize]);
-                        row[x * channelSize + 1] = Convert.ToByte(255 - row[x * channelSize + 1]);
-                        row[x * channelSize + 2] = Convert.ToByte(255 - row[x * channelSize + 2]);
+                        byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                        for (int x = 0; x < bmp.Width; x++)
+                        {
+                            for (int channel = 0; channel < 3; channel++)
+                            {
+                                row[x * channelSize + channel] = Convert.ToByte(Pts[row[x * channelSize + channel]].Y);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                unsafe
+                {
+                    int* bytes = (int*)data.Scan0;
+                    //MessageBox.Show(bytes[0].ToString());
+                    var channelSize = 3;
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                        for (int x = 0; x < bmp.Width; x++)
+                        {
+                            row[x * channelSize] = Convert.ToByte(255 - row[x * channelSize]);
+                            row[x * channelSize + 1] = Convert.ToByte(255 - row[x * channelSize + 1]);
+                            row[x * channelSize + 2] = Convert.ToByte(255 - row[x * channelSize + 2]);
+                        }
                     }
                 }
             }

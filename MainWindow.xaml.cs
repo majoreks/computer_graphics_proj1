@@ -219,7 +219,9 @@ namespace cg1
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
             EditFiltersWindow editWindow = new EditFiltersWindow();
-            editWindow.Show();
+            editWindow.ShowDialog();
+            var ret = editWindow.retVal;
+            MessageBox.Show(ret.name + " " + ret.points.ToString());
         }
     }
 }

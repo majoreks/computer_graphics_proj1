@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,15 +18,13 @@ namespace cg1
     /// </summary>
     public partial class EditFiltersWindow : Window
     {
-        private Label dataLabel = null;
-        private PointCollection pts;
-        public EditFiltersWindow()
+        private PointCollection pts = null;
+        public EditFiltersWindow(ObservableCollection<IFilter> list)
         {
             InitializeComponent();
             pts = pointsInit();
             functionPolyline.Points = pts;
-            dataLabel = new Label();
-            polylineWrapperCanvas.Children.Add(dataLabel);
+            filterComboBox.ItemsSource = list;
         }
 
         private PointCollection pointsInit()
@@ -51,6 +50,7 @@ namespace cg1
             }
             string tmp = nameTextBox.Text;
             retVal = (tmp, pts);
+            this.DialogResult = true;
             this.Close();
         }
 

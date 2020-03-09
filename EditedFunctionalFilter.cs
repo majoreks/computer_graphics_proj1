@@ -35,10 +35,6 @@ namespace cg1
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     byte* row = (byte*)data.Scan0 + (y * data.Stride);
-                    //if (y == 0)
-                    //{
-                    //    MessageBox.Show(row[0].ToString());
-                    //}
                     for (int x = 0; x < bmp.Width; x++)
                     {
                         for (int channel = 0; channel < 3; channel++)

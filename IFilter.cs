@@ -5,7 +5,7 @@ using System.Text;
 
 namespace cg1
 {
-    interface IFilter
+    public interface IFilter
     {
         public void Filter(Bitmap bmp);
     }

@@ -218,15 +218,20 @@ namespace cg1
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            EditFiltersWindow editWindow = new EditFiltersWindow();
-            editWindow.ShowDialog();
-            var ret = editWindow.retVal;
-            EditedFunctionalFilter xd = new EditedFunctionalFilter(ret.name, ret.points);
-            if (ret.name.Length == 0)
+            var tmp = functionalFiltersList;
+            tmp.RemoveAt(2);
+            EditFiltersWindow editWindow = new EditFiltersWindow(tmp);
+            if (editWindow.ShowDialog() == true)
             {
-                return;
+                var ret = editWindow.retVal;
+                if (ret.name.Length == 0 || ret.points == null)
+                {
+                    return;
+                }
+                EditedFunctionalFilter xd = new EditedFunctionalFilter(ret.name, ret.points);
+                functionalFiltersList.Add(xd);
             }
-            functionalFiltersList.Add(xd);
+            
             //functionalFiltersListBox.ItemsSource = functionalFiltersList;
             //MessageBox.Show(ret.name + " " + ret.points.ToString());
         }

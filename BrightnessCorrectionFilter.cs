@@ -30,39 +30,66 @@ namespace cg1
             BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
                 ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            unsafe
+            if (Pts != null)
             {
-                int* bytes = (int*)data.Scan0;
-                var channelSize = 3;
-                for (int y = 0; y < bmp.Height; y++)
+                unsafe
                 {
-                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
-                    //if (y == 0)
-                    //{
-                    //    MessageBox.Show(row[0].ToString());
-                    //}
-                    for (int x = 0; x < bmp.Width; x++)
+                    int* bytes = (int*)data.Scan0;
+                    var channelSize = 3;
+                    for (int y = 0; y < bmp.Height; y++)
                     {
-                        for (int channel = 0; channel < 3; channel++)
+                        byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                        //if (y == 0)
+                        //{
+                        //    MessageBox.Show(row[0].ToString());
+                        //}
+                        for (int x = 0; x < bmp.Width; x++)
                         {
-                            int newVal = row[x * channelSize + channel] + DX;
-                            // this if, or it's else are unreachable depending on DX's value
-
-                            if (newVal > 255)
+                            for (int channel = 0; channel < 3; channel++)
                             {
-                                newVal = 255;
+                                row[x * channelSize + channel] = Convert.ToByte(Pts[row[x * channelSize + channel]].Y);
                             }
-
-                            else if (newVal < 0)
-                            {
-                                newVal = 0;
-                            }
-
-                            row[x * channelSize + channel] = Convert.ToByte(newVal);
                         }
                     }
                 }
             }
+            else
+            {
+                unsafe
+                {
+                    int* bytes = (int*)data.Scan0;
+                    var channelSize = 3;
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                        //if (y == 0)
+                        //{
+                        //    MessageBox.Show(row[0].ToString());
+                        //}
+                        for (int x = 0; x < bmp.Width; x++)
+                        {
+                            for (int channel = 0; channel < 3; channel++)
+                            {
+                                int newVal = row[x * channelSize + channel] + DX;
+                                // this if, or it's else are unreachable depending on DX's value
+
+                                if (newVal > 255)
+                                {
+                                    newVal = 255;
+                                }
+
+                                else if (newVal < 0)
+                                {
+                                    newVal = 0;
+                                }
+
+                                row[x * channelSize + channel] = Convert.ToByte(newVal);
+                            }
+                        }
+                    }
+                }
+            }
+
             bmp.UnlockBits(data);
         }
 

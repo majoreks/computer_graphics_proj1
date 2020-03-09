@@ -10,5 +10,8 @@ namespace cg1
     {
         public void Filter(Bitmap bmp);
         public PointCollection GeneratePoints();
+        public void SetName(string name);
+        public void SetPoints(PointCollection pts);
+        public string GetName();
     }
 }

@@ -24,6 +24,7 @@ namespace cg1
         public string Name
         {
             get { return name; }
+            set => name = value;
         }
         public void Filter(Bitmap bmp)
         {
@@ -60,6 +61,10 @@ namespace cg1
 
         public PointCollection GeneratePoints()
         {
+            if (Pts != null)
+            {
+                return Pts;
+            }
             Pts = new PointCollection();
             for (int i = 0; i < 256; i++)
             {
@@ -78,6 +83,21 @@ namespace cg1
             }
             //MessageBox.Show(Pts.ToString());
             return Pts;
+        }
+
+        public void SetName(string name)
+        {
+            this.Name = name;
+        }
+
+        public void SetPoints(PointCollection pts)
+        {
+            Pts = pts;
+        }
+
+        public string GetName()
+        {
+            return Name;
         }
     }
 }

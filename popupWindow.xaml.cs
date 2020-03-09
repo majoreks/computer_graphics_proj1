@@ -49,7 +49,6 @@ namespace cg1
                         Val = val;
                         this.Close();
                     }
-
                 }
             }
         }

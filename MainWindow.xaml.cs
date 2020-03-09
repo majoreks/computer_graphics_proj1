@@ -156,6 +156,7 @@ namespace cg1
             {
                 return;
             }
+            //MessageBox.Show(tmp.SelectedItem.ToString());
             convolutionFiltersListBox.UnselectAll();
             selectedFilter = tmp.SelectedItem as IFilter;
         }
@@ -236,11 +237,21 @@ namespace cg1
                 {
                     return;
                 }
+                if (ret.name.Contains("(edited)"))
+                {
+                    functionalFiltersList[ret.index].SetName(ret.name);
+                    functionalFiltersList[ret.index].SetPoints(ret.points);
+                    functionalFiltersListBox.ItemsSource = functionalFiltersList;
+                    return;
+                    //functionalFiltersList.RemoveAt(ret.index);
+                    //functionalFiltersList.Add(xd);
+                    //return;
+                }
                 EditedFunctionalFilter xd = new EditedFunctionalFilter(ret.name, ret.points);
                 functionalFiltersList.Add(xd);
                 tmp.Add(xd);
             }
-            
+
             //functionalFiltersListBox.ItemsSource = functionalFiltersList;
             //MessageBox.Show(ret.name + " " + ret.points.ToString());
         }

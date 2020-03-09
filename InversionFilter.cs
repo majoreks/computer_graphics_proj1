@@ -11,17 +11,21 @@ namespace cg1
 {
     public class InversionFilter : IFilter
     {
-        private string name = "Inversion";
+        private string name;
         public string Name
         {
-            get { return name; }
-            set => name = value;
+            get { return this.name; }
+            set => this.name = value;
         }
 
         public PointCollection Pts
         {
             get;
             set;
+        }
+        public InversionFilter()
+        {
+            Name = "Inversion";
         }
 
         public void Filter(Bitmap bmp)
@@ -51,12 +55,31 @@ namespace cg1
 
         public PointCollection GeneratePoints()
         {
+            if (Pts != null)
+            {
+                return Pts;
+            }
             Pts = new PointCollection();
             for (int i = 0; i < 256; i++)
             {
                 Pts.Add(new System.Windows.Point(i,255-i));
             }
             return Pts;
+        }
+
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
+        }
+
+        public void SetPoints(PointCollection pts)
+        {
+            Pts = pts;
         }
     }
 }

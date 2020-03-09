@@ -19,6 +19,12 @@ namespace cg1
         public string Name
         {
             get { return name; }
+            set => name = value;
+        }
+        public PointCollection Pts
+        {
+            get;
+            set;
         }
 
         public ConvolutionFilter(string name, double[,] kernel, int factor, int offset)
@@ -93,6 +99,21 @@ namespace cg1
         public PointCollection GeneratePoints()
         {
             throw new NotImplementedException();
+        }
+
+        public void SetName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPoints(PointCollection pts)
+        {
+            Pts = pts;
+        }
+
+        public string GetName()
+        {
+            return Name;
         }
     }
 }

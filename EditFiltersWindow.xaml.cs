@@ -37,23 +37,11 @@ namespace cg1
             return pts;
         }
 
-        public (string name, PointCollection points) retVal
+        public (string name, PointCollection points, int index) retVal
         {
             get;
             set;
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (nameTextBox.Text == null)
-            {
-                return;
-            }
-            string tmp = nameTextBox.Text;
-            retVal = (tmp, pts);
-            this.DialogResult = true;
-            this.Close();
-        }
-
 
         private Point findPosition(MouseEventArgs e)
         {
@@ -135,9 +123,40 @@ namespace cg1
             pts = ((IFilter)tmp.SelectedItem).GeneratePoints();
             functionPolyline.Points = pts;
         }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (nameTextBox.Text == null)
+            {
+                return;
+            }
+            string tmp = nameTextBox.Text;
+            retVal = (tmp, pts, -1);
+            this.DialogResult = true;
+            this.Close();
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if (filterComboBox.SelectedItem == null)
+            {
+                return;
+            }
+            IFilter tmpFilter = filterComboBox.SelectedItem as IFilter;
+            string tmp;
+            if (!tmpFilter.GetName().Contains("(edited)"))
+            {
+                tmp = $"{tmpFilter.GetName()} (edited)";
+
+            }
+            else
+            {
+                tmp = tmpFilter.GetName();
+           }
+            int tmpIndex = filterComboBox.SelectedIndex > 1 ? filterComboBox.SelectedIndex + 1 : filterComboBox.SelectedIndex;
+            retVal = (tmp, pts, tmpIndex);
+            this.DialogResult = true;
+            this.Close();
+            //MessageBox.Show("XD");
 
         }
     }

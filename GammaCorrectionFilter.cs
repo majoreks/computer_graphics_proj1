@@ -14,7 +14,7 @@ namespace cg1
     {
         private string name = "Gamma Correction";
         // changable correction
-        private const double GAMMA = 1/2.2;
+        private double GAMMA = 1/2.2;
         public string Name
         {
             get { return name; }
@@ -69,6 +69,10 @@ namespace cg1
         public string GetName()
         {
             return Name;
+        }
+        public void SetGamma(double gamma)
+        {
+            GAMMA = gamma; 
         }
     }
 }

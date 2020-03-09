@@ -255,5 +255,23 @@ namespace cg1
             //functionalFiltersListBox.ItemsSource = functionalFiltersList;
             //MessageBox.Show(ret.name + " " + ret.points.ToString());
         }
+
+        private void setGammaButton_Click(object sender, RoutedEventArgs e)
+        {
+            double val;
+            if (double.TryParse(gammaTextBox.Text, out val))
+            {
+                if (val < 0)
+                {
+                    return;
+                }
+                else
+                {
+                    GammaCorrectionFilter xd = functionalFiltersList[2] as GammaCorrectionFilter;
+                    xd.SetGamma(val);
+                    MessageBox.Show("gamma changed");
+                }
+            }
+        }
     }
 }

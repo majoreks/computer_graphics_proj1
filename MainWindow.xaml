@@ -50,6 +50,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <GroupBox Header="Functional Filters" Grid.Row="0" Margin="5">
                             <ListBox Margin="5" Name="functionalFiltersListBox" SelectionChanged="functionalFiltersListBox_SelectionChanged">
@@ -70,6 +71,16 @@
                             </ListBox>
                         </GroupBox>
                         <Button Content="Apply" Grid.Row="2" Margin="5" Click="Button_Click"/>
+                        <GroupBox Header="Lab task" Grid.Row="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBox Name="gammaTextBox" Grid.Row="0" Margin="5"/>
+                                <Button Name="setGammaButton" Grid.Row="1" Content="Set gamma" Margin="5" Click="setGammaButton_Click"/>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
                 </Expander.Content>
             </Expander>

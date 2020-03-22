@@ -112,8 +112,6 @@ namespace cg1
 
             pts[(int)mousePosition.X] = new Point((int)mousePosition.X, val);
             functionPolyline.Points = pts;
-            //MessageBox.Show(pts.ToString()) ;
-
         }
 
         private void filterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -143,15 +141,7 @@ namespace cg1
             }
             IFilter tmpFilter = filterComboBox.SelectedItem as IFilter;
             string tmp;
-            if (!tmpFilter.GetName().Contains("(edited)"))
-            {
-                tmp = $"{tmpFilter.GetName()} (edited)";
-
-            }
-            else
-            {
-                tmp = tmpFilter.GetName();
-           }
+            tmp = tmpFilter.GetName();
             int tmpIndex = filterComboBox.SelectedIndex > 1 ? filterComboBox.SelectedIndex + 1 : filterComboBox.SelectedIndex;
             retVal = (tmp, pts, tmpIndex);
             this.DialogResult = true;

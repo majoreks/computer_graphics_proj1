@@ -239,7 +239,7 @@ namespace cg1
                 }
                 if (ret.index>=0)
                 {
-                    functionalFiltersList[ret.index].SetName(ret.name);
+                    //functionalFiltersList[ret.index].SetName(ret.name);
                     functionalFiltersList[ret.index].SetPoints(ret.points);
                     functionalFiltersListBox.ItemsSource = functionalFiltersList;
                     return;
@@ -254,6 +254,24 @@ namespace cg1
 
             //functionalFiltersListBox.ItemsSource = functionalFiltersList;
             //MessageBox.Show(ret.name + " " + ret.points.ToString());
+        }
+
+        private void setGammaButton_Click(object sender, RoutedEventArgs e)
+        {
+            double val;
+            if (double.TryParse(gammaTextBox.Text, out val))
+            {
+                if (val < 0)
+                {
+                    return;
+                }
+                else
+                {
+                    GammaCorrectionFilter xd = functionalFiltersList[2] as GammaCorrectionFilter;
+                    xd.SetGamma(val);
+                    MessageBox.Show("gamma changed");
+                }
+            }
         }
     }
 }

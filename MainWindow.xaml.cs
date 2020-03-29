@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,6 +30,12 @@ namespace cg1
         private ObservableCollection<IFilter> functionalFiltersList;
         private ObservableCollection<IFilter> convolutionalFiltersList;
         private IFilter selectedFilter;
+        private bool isGrayScale = false;
+        //public bool ButtonEnabled
+        //{
+        //    get { return !isGrayScale; }
+        //    set { isGrayScale = value; }
+        //}
         public MainWindow()
         {
             InitializeComponent();
@@ -72,6 +79,7 @@ namespace cg1
                                 { 0, 0, 0, }, },
                 1, 128));
             convolutionFiltersListBox.ItemsSource = convolutionalFiltersList;
+            buttonConvertToGrayscale.IsEnabled = !isGrayScale;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -186,6 +194,8 @@ namespace cg1
             {
                 originalImage.Source = new BitmapImage(new Uri(op.FileName));
             }
+            isGrayScale = false;
+            buttonConvertToGrayscale.IsEnabled = !isGrayScale;
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -237,7 +247,7 @@ namespace cg1
                 {
                     return;
                 }
-                if (ret.index>=0)
+                if (ret.index >= 0)
                 {
                     //functionalFiltersList[ret.index].SetName(ret.name);
                     functionalFiltersList[ret.index].SetPoints(ret.points);
@@ -272,6 +282,67 @@ namespace cg1
                     MessageBox.Show("gamma changed");
                 }
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+            if (filteredImage.Source == null && originalImage.Source == null)
+            {
+                //MessageBox.Show("error");
+                return;
+            }
+            if (isGrayScale)
+            {
+                return;
+            }
+            BitmapImage bimg = new BitmapImage();
+            if (filteredImage.Source != null)
+            {
+                bimg = (BitmapImage)filteredImage.Source;
+            }
+            else
+            {
+                bimg = (BitmapImage)originalImage.Source;
+            }
+            //MessageBox.Show(convolutionFiltersListBox.SelectedIndex.ToString(), functionalFiltersListBox.SelectedIndex.ToString());
+            //MessageBox.Show(selectedFilter.ToString());
+            Bitmap bmp = BitmapImage2Bitmap(bimg);
+            ConvertToGrayScale(bmp);
+            ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
+            filteredImage.Source = newImg;
+            isGrayScale = true;
+            buttonConvertToGrayscale.IsEnabled = !isGrayScale;
+            //MessageBox.Show(isGrayScale.ToString());
+        }
+
+        private void ConvertToGrayScale(Bitmap bmp)
+        {
+            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            unsafe
+            {
+                int* bytes = (int*)data.Scan0;
+                var channelSize = 3;
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                    //if (y == 0)
+                    //{
+                    //    MessageBox.Show(row[0].ToString());
+                    //}
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        byte newVal = (byte)(row[x * channelSize] * .21 + row[x * channelSize + 1] * .71 + row[x * channelSize + 2] * .071);
+                        for (int channel = 0; channel < 3; channel++)
+                        {
+                            row[x * channelSize + channel] = Convert.ToByte(newVal);
+                        }
+                    }
+                }
+            }
+            bmp.UnlockBits(data);
         }
     }
 }

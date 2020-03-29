@@ -344,5 +344,19 @@ namespace cg1
             }
             bmp.UnlockBits(data);
         }
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (sender == sv1)
+            {
+                sv2.ScrollToVerticalOffset(e.VerticalOffset);
+                sv2.ScrollToHorizontalOffset(e.HorizontalOffset);
+            }
+            else
+            {
+                sv1.ScrollToVerticalOffset(e.VerticalOffset);
+                sv1.ScrollToHorizontalOffset(e.HorizontalOffset);
+            }
+        }
     }
 }

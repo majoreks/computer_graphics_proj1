@@ -45,7 +45,7 @@
                                         <Setter Property="Header" Value="Hide proj 1"/>
                                     </Trigger>
                                     <Trigger Property="IsExpanded" Value="False">
-                                        <Setter Property="Header" Value="Show proj 2"/>
+                                        <Setter Property="Header" Value="Show proj 1"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

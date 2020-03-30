@@ -32,11 +32,7 @@ namespace cg1
         private ObservableCollection<IFilter> convolutionalFiltersList;
         private IFilter selectedFilter;
         private bool isGrayScale = false;
-        //public bool ButtonEnabled
-        //{
-        //    get { return !isGrayScale; }
-        //    set { isGrayScale = value; }
-        //}
+
         public MainWindow()
         {
             InitializeComponent();
@@ -518,5 +514,161 @@ namespace cg1
         {
             e.Handled = !IsValid(((TextBox)sender).Text + e.Text);
         }
+
+        private void TextBlock_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex r = new Regex("[^0-9]+");
+            e.Handled = r.IsMatch(e.Text);
+        }
+
+        // in theory this is responsible for the color quantization, however I was unable to make it work, when I go through
+        // colours to add them to octree, I end up with 0 colors in palette
+        private void buttonOctree_Click(object sender, RoutedEventArgs e)
+        {
+            if (filteredImage.Source == null && originalImage.Source == null)
+            {
+                //MessageBox.Show("error");
+                return;
+            }
+            BitmapImage bimg = new BitmapImage();
+            if (filteredImage.Source != null)
+            {
+                bimg = (BitmapImage)filteredImage.Source;
+            }
+            else
+            {
+                bimg = (BitmapImage)originalImage.Source;
+            }
+
+            Bitmap bmp = BitmapImage2Bitmap(bimg);
+            var xd = GetColors(bmp);
+            MessageBox.Show($"{xd.Count}"); // shows number of colors in palette, couldnt make it work, its here just for testing
+
+            ////algorithm
+
+            //ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
+            //filteredImage.Source = newImg;
+        }
+
+        private List<MyColor> GetColors(Bitmap bmp)
+        {
+            List<(byte, byte, byte)> ps = new List<(byte, byte, byte)>();
+            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            unsafe
+            {
+                int* bytes = (int*)data.Scan0;
+                var channelSize = 3;
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
+
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        byte oldVal = row[x * channelSize];
+                        ps.Add((row[x * channelSize], row[x * channelSize + 1], row[x * channelSize + 2]));
+
+                    }
+                }
+            }
+            bmp.UnlockBits(data);
+            ps = ps.ToArray().Distinct().ToList();
+            //MessageBox.Show(ps.Count.ToString());
+            Quantizer quantizer = new Quantizer();
+            foreach (var xd in ps)
+            {
+                quantizer.AddColor(new MyColor((int)xd.Item1, (int)xd.Item2, (int)xd.Item3));
+            }
+            return quantizer.MakePalette(int.Parse(textBoxOctree.Text));
+        }
+
+        private void buttonLabTask2_Click(object sender, RoutedEventArgs e)
+        {
+            if (filteredImage.Source == null && originalImage.Source == null)
+            {
+                //MessageBox.Show("error");
+                return;
+            }
+            BitmapImage bimg = new BitmapImage();
+            if (filteredImage.Source != null)
+            {
+                bimg = (BitmapImage)filteredImage.Source;
+            }
+            else
+            {
+                bimg = (BitmapImage)originalImage.Source;
+            }
+            Bitmap bmp = BitmapImage2Bitmap(bimg);
+
+            Bitmap bmpY = (Bitmap)bmp.Clone();
+            Bitmap bmpCr = (Bitmap)bmp.Clone();
+            Bitmap bmpCb = (Bitmap)bmp.Clone();
+
+            BitmapData bmpYData = bmpY.LockBits(new System.Drawing.Rectangle(0, 0, bmpY.Width, bmpY.Height), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            BitmapData dataCr = bmpCr.LockBits(new System.Drawing.Rectangle(0, 0, bmpCr.Width, bmpCr.Height), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            BitmapData dataCb = bmpCb.LockBits(new System.Drawing.Rectangle(0, 0, bmpCb.Width, bmpCb.Height), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                int* bytes = (int*)data.Scan0;
+
+                int* bytesY = (int*)bmpYData.Scan0;
+                int* bytesCr = (int*)dataCr.Scan0;
+
+                var channelSize = 3;
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                    byte* rowY = (byte*)bmpYData.Scan0 + (y * bmpYData.Stride);
+                    byte* rowCr = (byte*)dataCr.Scan0 + (y * dataCr.Stride);
+                    byte* rowCb = (byte*)dataCb.Scan0 + (y * dataCb.Stride);
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        byte b = row[x * channelSize]; 
+                        byte g = row[x * channelSize + 1];
+                        byte r = row[x * channelSize + 2];
+                        var cr = (0.5 * r + 0.418688 * g + 0.081312 * b)/255;
+                        var cb = (0.168736 * r + 0.331264 * g + 0.5 * b)/255;
+                        //cr = cr / 255;
+                        //cb = cb / 255;
+                        rowCr[x * channelSize] = (byte)127;
+                        rowCr[x * channelSize + 1] = (byte)Lerp(255, 0, cr);
+                        rowCr[x * channelSize + 2] = (byte)Lerp(0, 255, cr);
+
+                        rowCb[x * channelSize] = (byte)Lerp(0, 255, cb);
+                        rowCb[x * channelSize + 1] = (byte)Lerp(255, 0, cb);
+                        rowCb[x * channelSize + 2] = (byte)127;
+                        for (int i = 0; i < channelSize; i++)
+                        {
+                            rowY[x * channelSize + i] = (byte)(16 + 65.738 / 256 * r + 129.057 / 256 * g + 25.064 / 256 * b);
+                        }
+                    }
+                }
+            }
+            bmp.UnlockBits(data);
+            bmpY.UnlockBits(bmpYData);
+            bmpCr.UnlockBits(dataCr);
+            bmpCb.UnlockBits(dataCb);
+            //ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmpY);
+            //filteredImage.Source = newImg;
+            ShowImageWindow w = new ShowImageWindow((ImageSource)Bitmap2BitmapImage(bmpY));
+            w.Title = "Y";
+            w.Show();
+            ShowImageWindow wCr = new ShowImageWindow((ImageSource)Bitmap2BitmapImage(bmpCr));
+            wCr.Title = "Cr";
+            wCr.Show();
+            ShowImageWindow wCb = new ShowImageWindow((ImageSource)Bitmap2BitmapImage(bmpCb));
+            wCb.Title = "Cb";
+            wCb.Show();
+        }
+
+        private int Lerp(double a, double b, double t)
+        {
+            return (int)((1 - t) * a + t * b);
+        }
     }
+
+    
 }

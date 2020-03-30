@@ -110,6 +110,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <GroupBox Header="Grayscale conversion" Grid.Row="0">
                                     <Button Content="Convert image to grayscale" Click="Button_Click_1" Margin="5" IsEnabled="{Binding}" Name="buttonConvertToGrayscale"/>
@@ -122,7 +123,7 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <GroupBox Header="Grayscale" Margin="5" Grid.Row="0">
-                                            <TextBox Name="textBoxGrayscale" Margin="5" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
+                                            <TextBox Name="textBoxGrayscale" Margin="5" PreviewTextInput="textBoxR_PreviewTextInput" Text="2" VerticalContentAlignment="Center"/>
                                         </GroupBox>
                                         <GroupBox Header="Color" Margin="5" Grid.Row="1">
                                             <Grid>
@@ -138,16 +139,31 @@
                                                 <Label Content="R" Grid.Row="0" Grid.Column="0"/>
                                                 <Label Content="G" Grid.Row="1" Grid.Column="0"/>
                                                 <Label Content="B" Grid.Row="2" Grid.Column="0"/>
-                                                <TextBox Name="textBoxR" Grid.Row="0" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
-                                                <TextBox Name="textBoxG" Grid.Row="1" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
-                                                <TextBox Name="textBoxB" Grid.Row="2" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
+                                                <TextBox Name="textBoxR" Grid.Row="0" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2" VerticalContentAlignment="Center"/>
+                                                <TextBox Name="textBoxG" Grid.Row="1" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2" VerticalContentAlignment="Center"/>
+                                                <TextBox Name="textBoxB" Grid.Row="2" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2" VerticalContentAlignment="Center"/>
                                             </Grid>
                                         </GroupBox>
                                         <Button Grid.Row="2" Content="Apply random dithering" Name="buttonApplyDithering" Click="buttonApplyDithering_Click" Margin="5"/>
                                     </Grid>
                                 </GroupBox>
                                 <GroupBox Header="Color quantization" Grid.Row="2">
-
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Margin="5" Content="Max colors" Grid.Row="0" Grid.Column="0"/>
+                                        <TextBox Margin="5" Text="2" PreviewTextInput="TextBlock_PreviewTextInput" Name="textBoxOctree" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+                                        <Button Margin="5" Name="buttonOctree" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Content="Process" Click="buttonOctree_Click"/>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox Header="Lab task" Grid.Row="3">
+                                    <Button Margin="5" Name="buttonLabTask2" Click="buttonLabTask2_Click" Content="Split into YCbCr"/>
                                 </GroupBox>
                             </Grid>
                         </Expander.Content>

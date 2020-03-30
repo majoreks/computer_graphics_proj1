@@ -13,6 +13,9 @@
     <Compile Update="popupWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ShowImageWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="EditFiltersWindow.xaml">
@@ -22,6 +25,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="popupWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ShowImageWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

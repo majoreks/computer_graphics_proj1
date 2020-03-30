@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -80,6 +81,7 @@ namespace cg1
                 1, 128));
             convolutionFiltersListBox.ItemsSource = convolutionalFiltersList;
             buttonConvertToGrayscale.IsEnabled = !isGrayScale;
+            textBoxGrayscale.IsEnabled = isGrayScale;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -195,7 +197,11 @@ namespace cg1
                 originalImage.Source = new BitmapImage(new Uri(op.FileName));
             }
             isGrayScale = false;
+            textBoxR.IsEnabled = !isGrayScale;
+            textBoxG.IsEnabled = !isGrayScale;
+            textBoxB.IsEnabled = !isGrayScale;
             buttonConvertToGrayscale.IsEnabled = !isGrayScale;
+            textBoxGrayscale.IsEnabled = isGrayScale;
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -225,6 +231,12 @@ namespace cg1
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
             filteredImage.Source = null;
+            isGrayScale = false;
+            textBoxR.IsEnabled = !isGrayScale;
+            textBoxG.IsEnabled = !isGrayScale;
+            textBoxB.IsEnabled = !isGrayScale;
+            buttonConvertToGrayscale.IsEnabled = !isGrayScale;
+            textBoxGrayscale.IsEnabled = isGrayScale;
         }
         private bool delAtIndex = true;
         ObservableCollection<IFilter> tmp = new ObservableCollection<IFilter>();
@@ -312,6 +324,10 @@ namespace cg1
             ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
             filteredImage.Source = newImg;
             isGrayScale = true;
+            textBoxGrayscale.IsEnabled = isGrayScale;
+            textBoxR.IsEnabled = !isGrayScale;
+            textBoxG.IsEnabled = !isGrayScale;
+            textBoxB.IsEnabled = !isGrayScale;
             buttonConvertToGrayscale.IsEnabled = !isGrayScale;
             //MessageBox.Show(isGrayScale.ToString());
         }
@@ -357,6 +373,150 @@ namespace cg1
                 sv1.ScrollToVerticalOffset(e.VerticalOffset);
                 sv1.ScrollToHorizontalOffset(e.HorizontalOffset);
             }
+        }
+
+        private void buttonApplyDithering_Click(object sender, RoutedEventArgs e)
+        {
+            if (filteredImage.Source == null && originalImage.Source == null)
+            {
+                //MessageBox.Show("error");
+                return;
+            }
+            BitmapImage bimg = new BitmapImage();
+            if (filteredImage.Source != null)
+            {
+                bimg = (BitmapImage)filteredImage.Source;
+            }
+            else
+            {
+                bimg = (BitmapImage)originalImage.Source;
+            }
+            Bitmap bmp = BitmapImage2Bitmap(bimg);
+
+            //algorithm
+            if (isGrayScale)
+            {
+                int[] levels = LinSpace(0, 255, int.Parse(textBoxGrayscale.Text));
+                Random r = new Random();
+                int threshold = r.Next(0, 255);
+                BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                unsafe
+                {
+                    int* bytes = (int*)data.Scan0;
+                    var channelSize = 3;
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                        //if (y == 0)
+                        //{
+                        //    MessageBox.Show(row[0].ToString());
+                        //}
+                        for (int x = 0; x < bmp.Width; x++)
+                        {
+                            byte oldVal = row[x * channelSize];
+                            byte newVal;
+                            byte first = (byte)levels.OrderBy(x => Math.Abs((long)x - oldVal)).First();
+                            byte second = (byte)levels.OrderBy(x => Math.Abs((long)x - oldVal)).Skip(1).First();
+                            if (oldVal < threshold)
+                            {
+                                newVal = Math.Min(first, second);
+                            }
+                            else
+                            {
+                                newVal = Math.Max(first, second);
+                            }
+                            for (int channel = 0; channel < 3; channel++)
+                            {
+                                row[x * channelSize + channel] = Convert.ToByte(newVal);
+                            }
+                            threshold = r.Next(0, 255);
+                        }
+                    }
+                }
+                bmp.UnlockBits(data);
+            }
+            else
+            {
+                int[] levelsR = LinSpace(0, 255, int.Parse(textBoxR.Text));
+                int[] levelsG = LinSpace(0, 255, int.Parse(textBoxG.Text));
+                int[] levelsB = LinSpace(0, 255, int.Parse(textBoxB.Text));
+                int[][] levels = { levelsB, levelsG, levelsR };
+                Random r = new Random();
+                int threshold = r.Next(0, 255);
+                BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                unsafe
+                {
+                    int* bytes = (int*)data.Scan0;
+                    var channelSize = 3;
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                        //if (y == 0)
+                        //{
+                        //    MessageBox.Show(row[0].ToString());
+                        //}
+                        for (int x = 0; x < bmp.Width; x++)
+                        {
+                            
+                            for (int channel = 0; channel < 3; channel++)
+                            {
+                                byte oldVal = row[x * channelSize + channel];
+                                byte newVal;
+                                byte first = (byte)levels[channel].OrderBy(x => Math.Abs((long)x - oldVal)).First();
+                                byte second = (byte)levels[channel].OrderBy(x => Math.Abs((long)x - oldVal)).Skip(1).First();
+                                if (oldVal < threshold)
+                                {
+                                    newVal = Math.Min(first, second);
+                                }
+                                else
+                                {
+                                    newVal = Math.Max(first, second);
+                                }
+
+                                row[x * channelSize + channel] = Convert.ToByte(newVal);
+                                threshold = r.Next(0, 255);
+                            }
+                            
+                        }
+                    }
+                }
+                bmp.UnlockBits(data);
+
+            }
+
+
+            ImageSource newImg = (ImageSource)Bitmap2BitmapImage(bmp);
+            filteredImage.Source = newImg;
+        }
+
+        private int[] LinSpace(int x1, int x2, int n)
+        {
+            if (n < 2)
+            {
+                return null;
+            }
+            int step = (x2 - x1) / (n - 1);
+            int[] xd = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                xd[i] = x1 + step * i;
+            }
+            return xd;
+        }
+
+        public static bool IsValid(string str)
+        {
+            int i;
+            return int.TryParse(str, out i) && i >= 0 && i <= 255;
+        }
+
+        private void textBoxR_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsValid(((TextBox)sender).Text + e.Text);
         }
     }
 }

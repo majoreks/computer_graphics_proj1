@@ -30,123 +30,134 @@
             </Menu>
         </DockPanel>
         <GroupBox Margin="5" Grid.Column="2" Grid.Row="1" Header="Filters">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Expander ExpandDirection="Down" Grid.Row="0" HorizontalAlignment="Left" 
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Expander ExpandDirection="Down" Grid.Row="0" HorizontalAlignment="Left" 
                       VerticalAlignment="Top" Margin="5" IsExpanded="False">
-                    <Expander.Style>
-                        <Style TargetType="Expander">
-                            <Style.Triggers>
-                                <Trigger Property="IsExpanded" Value="True">
-                                    <Setter Property="Header" Value="Hide filters"/>
-                                </Trigger>
-                                <Trigger Property="IsExpanded" Value="False">
-                                    <Setter Property="Header" Value="Show filters"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Expander.Style>
-                    <Expander.Content>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <GroupBox Header="Functional Filters" Grid.Row="0" Margin="5">
-                                <ListBox Margin="5" Name="functionalFiltersListBox" SelectionChanged="functionalFiltersListBox_SelectionChanged">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </GroupBox>
-                            <GroupBox Header="Convolution Filters" Grid.Row="1" Margin="5">
-                                <ListBox Margin="5" Name="convolutionFiltersListBox" SelectionChanged="convolutionFiltersListBox_SelectionChanged">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </GroupBox>
-                            <Button Content="Apply" Grid.Row="2" Margin="5" Click="Button_Click"/>
-                            <GroupBox Header="Lab task" Grid.Row="3">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBox Name="gammaTextBox" Grid.Row="0" Margin="5"/>
-                                    <Button Name="setGammaButton" Grid.Row="1" Content="Set gamma" Margin="5" Click="setGammaButton_Click"/>
-                                </Grid>
-                            </GroupBox>
-                        </Grid>
-                    </Expander.Content>
-                </Expander>
-                <Expander Grid.Row="1" HorizontalAlignment="Left" 
+                        <Expander.Style>
+                            <Style TargetType="Expander">
+                                <Style.Triggers>
+                                    <Trigger Property="IsExpanded" Value="True">
+                                        <Setter Property="Header" Value="Hide filters"/>
+                                    </Trigger>
+                                    <Trigger Property="IsExpanded" Value="False">
+                                        <Setter Property="Header" Value="Show filters"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+                        <Expander.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <GroupBox Header="Functional Filters" Grid.Row="0" Margin="5">
+                                    <ListBox Margin="5" Name="functionalFiltersListBox" SelectionChanged="functionalFiltersListBox_SelectionChanged">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <GroupBox Header="Convolution Filters" Grid.Row="1" Margin="5">
+                                    <ListBox Margin="5" Name="convolutionFiltersListBox" SelectionChanged="convolutionFiltersListBox_SelectionChanged">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
+                                <Button Content="Apply" Grid.Row="2" Margin="5" Click="Button_Click"/>
+                                <GroupBox Header="Lab task" Grid.Row="3">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBox Name="gammaTextBox" Grid.Row="0" Margin="5"/>
+                                        <Button Name="setGammaButton" Grid.Row="1" Content="Set gamma" Margin="5" Click="setGammaButton_Click"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+                    <Expander Grid.Row="1" HorizontalAlignment="Left" 
                       VerticalAlignment="Top" Margin="5" IsExpanded="True">
-                    <Expander.Style>
-                        <Style TargetType="Expander">
-                            <Style.Triggers>
-                                <Trigger Property="IsExpanded" Value="True">
-                                    <Setter Property="Header" Value="Hide proj 2"/>
-                                </Trigger>
-                                <Trigger Property="IsExpanded" Value="False">
-                                    <Setter Property="Header" Value="Show proj 2"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Expander.Style>
-                    <Expander.Content>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <GroupBox Header="Grayscale conversion" Grid.Row="0">
-                                <Button Content="Convert image to grayscale" Click="Button_Click_1" Margin="5" IsEnabled="{Binding}" Name="buttonConvertToGrayscale"/>
-                            </GroupBox>
-                            <GroupBox Header="Dithering" Grid.Row="1">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                </Grid>
-                            </GroupBox>
-                            <GroupBox Header="Color quantization" Grid.Row="2">
+                        <Expander.Style>
+                            <Style TargetType="Expander">
+                                <Style.Triggers>
+                                    <Trigger Property="IsExpanded" Value="True">
+                                        <Setter Property="Header" Value="Hide proj 2"/>
+                                    </Trigger>
+                                    <Trigger Property="IsExpanded" Value="False">
+                                        <Setter Property="Header" Value="Show proj 2"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+                        <Expander.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <GroupBox Header="Grayscale conversion" Grid.Row="0">
+                                    <Button Content="Convert image to grayscale" Click="Button_Click_1" Margin="5" IsEnabled="{Binding}" Name="buttonConvertToGrayscale"/>
+                                </GroupBox>
+                                <GroupBox Header="Dithering" Grid.Row="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <GroupBox Header="Grayscale" Margin="5" Grid.Row="0">
+                                            <TextBox Name="textBoxGrayscale" Margin="5" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
+                                        </GroupBox>
+                                        <GroupBox Header="Color" Margin="5" Grid.Row="1">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Content="R" Grid.Row="0" Grid.Column="0"/>
+                                                <Label Content="G" Grid.Row="1" Grid.Column="0"/>
+                                                <Label Content="B" Grid.Row="2" Grid.Column="0"/>
+                                                <TextBox Name="textBoxR" Grid.Row="0" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
+                                                <TextBox Name="textBoxG" Grid.Row="1" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
+                                                <TextBox Name="textBoxB" Grid.Row="2" Grid.Column="1" PreviewTextInput="textBoxR_PreviewTextInput" Text="2"/>
+                                            </Grid>
+                                        </GroupBox>
+                                        <Button Grid.Row="2" Content="Apply random dithering" Name="buttonApplyDithering" Click="buttonApplyDithering_Click" Margin="5"/>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox Header="Color quantization" Grid.Row="2">
 
-                            </GroupBox>
-                        </Grid>
-                    </Expander.Content>
-                </Expander>
-            </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+                </Grid>
+            </ScrollViewer>
             
-            
+
+
         </GroupBox>
-
-        <!--<Border BorderBrush="Black" BorderThickness="1" Margin="5" Grid.Column="0" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Header="Original Image" Name="originalImageGroupBox" Margin="5">
-                    <Image Source="{Binding}" Name="originalImage" Margin="5"/>
-                </GroupBox>
-                <GroupBox Grid.Column="1" Header="Filtered Image" Name="filteredImageGroupBox" Margin="5">
-                    <Image Source="{Binding}" Name="filteredImage" Margin="5"/>
-                </GroupBox>
-            </Grid>
-        </Border>-->
 
         <GroupBox Grid.Column="0" Grid.Row="1" Header="Original Image" Name="originalImageGroupBox" Margin="5">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged" Name="sv1">

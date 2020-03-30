@@ -29,7 +29,7 @@
                 <MenuItem Header="_About" Height="20"/>
             </Menu>
         </DockPanel>
-        <GroupBox Margin="5" Grid.Column="2" Grid.Row="1" Header="Filters">
+        <GroupBox Margin="5" Grid.Column="2" Grid.Row="1" Header="Actions">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -42,10 +42,10 @@
                             <Style TargetType="Expander">
                                 <Style.Triggers>
                                     <Trigger Property="IsExpanded" Value="True">
-                                        <Setter Property="Header" Value="Hide filters"/>
+                                        <Setter Property="Header" Value="Hide proj 1"/>
                                     </Trigger>
                                     <Trigger Property="IsExpanded" Value="False">
-                                        <Setter Property="Header" Value="Show filters"/>
+                                        <Setter Property="Header" Value="Show proj 2"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -154,9 +154,6 @@
                     </Expander>
                 </Grid>
             </ScrollViewer>
-            
-
-
         </GroupBox>
 
         <GroupBox Grid.Column="0" Grid.Row="1" Header="Original Image" Name="originalImageGroupBox" Margin="5">

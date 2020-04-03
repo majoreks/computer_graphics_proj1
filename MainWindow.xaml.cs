@@ -457,7 +457,7 @@ namespace cg1
                         //}
                         for (int x = 0; x < bmp.Width; x++)
                         {
-                            
+
                             for (int channel = 0; channel < 3; channel++)
                             {
                                 byte oldVal = row[x * channelSize + channel];
@@ -476,7 +476,7 @@ namespace cg1
                                 row[x * channelSize + channel] = Convert.ToByte(newVal);
                                 threshold = r.Next(0, 255);
                             }
-                            
+
                         }
                     }
                 }
@@ -626,12 +626,12 @@ namespace cg1
                     byte* rowCb = (byte*)dataCb.Scan0 + (y * dataCb.Stride);
                     for (int x = 0; x < bmp.Width; x++)
                     {
-                        byte b = row[x * channelSize]; 
+                        byte b = row[x * channelSize];
                         byte g = row[x * channelSize + 1];
                         byte r = row[x * channelSize + 2];
 
-                        var cr = (0.5 * r + 0.418688 * g + 0.081312 * b)/255;
-                        var cb = (0.168736 * r + 0.331264 * g + 0.5 * b)/255;
+                        var cr = (0.5 * r + 0.418688 * g + 0.081312 * b) / 255;
+                        var cb = (0.168736 * r + 0.331264 * g + 0.5 * b) / 255;
 
                         rowCr[x * channelSize] = (byte)127;
                         rowCr[x * channelSize + 1] = (byte)Lerp(255, 0, cr);
@@ -670,5 +670,5 @@ namespace cg1
         }
     }
 
-    
+
 }
